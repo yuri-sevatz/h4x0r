@@ -19,6 +19,9 @@ devices = [input for input in [
     )] if evdev.events.EV_KEY in input.capabilities()
 ]
 
+if not devices:
+    raise ValueError("No key event devices detected - Check device or permissions")
+
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 
