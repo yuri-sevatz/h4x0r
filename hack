@@ -5,15 +5,19 @@ import evdev
 import pygame
 import select
 
-parser = argparse.ArgumentParser(description='Hacker Sound Effects')
+parser = argparse.ArgumentParser(description='h4x0r sound effects')
 
 parser.add_argument(
-    'event', type=str, nargs='+',
-    help="list of /dev/input/event paths to access"
+    'device', type=str, nargs='*',
+    help="list of /dev/input/event devices to listen"
 )
 
 args = parser.parse_args()
-devices = [evdev.InputDevice(event) for event in args.event]
+devices = [input for input in [
+    evdev.InputDevice(device) for device in (
+        args.device if args.device else evdev.list_devices()
+    )] if evdev.events.EV_KEY in input.capabilities()
+]
 
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
