@@ -4,6 +4,7 @@ import argparse
 import evdev
 import pygame
 import select
+import os
 
 parser = argparse.ArgumentParser(description='h4x0r sound effects')
 
@@ -25,8 +26,10 @@ if not devices:
 pygame.mixer.pre_init(44100, -16, 1, 512)
 pygame.init()
 
-confirm = pygame.mixer.Sound("confirm.wav")
-escape = pygame.mixer.Sound("escape.wav")
+path = os.path.dirname(os.path.realpath(__file__))
+confirm = pygame.mixer.Sound(os.path.join(path, "sound/confirm.wav"))
+escape = pygame.mixer.Sound(os.path.join(path, "sound/escape.wav"))
+typing = pygame.mixer.Sound(os.path.join(path, "sound/typing.wav"))
 
 keypress = {
     evdev.ecodes.KEY_ENTER: confirm,
@@ -60,8 +63,6 @@ keyonce = {
     evdev.ecodes.KEY_VOLUMEUP,
     evdev.ecodes.KEY_VOLUMEDOWN,
 } | keypress.keys() | keyrelease.keys()
-
-typing = pygame.mixer.Sound("typing.wav")
 
 while True:
     r, w, x = select.select(devices, [], [])
