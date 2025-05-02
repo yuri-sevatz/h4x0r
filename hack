@@ -24,6 +24,7 @@ if not devices:
     raise ValueError("No key event devices detected - Check device or permissions")
 
 pygame.mixer.pre_init(44100, -16, 1, 512)
+pygame.mixer.init()
 pygame.init()
 
 path = os.path.dirname(os.path.realpath(__file__))
